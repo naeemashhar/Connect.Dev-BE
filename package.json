@@ -1,0 +1,21 @@
+{
+  "name": "connectdev-be",
+  "version": "1.0.0",
+  "description": "tinder-app for dev's",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "Back-end",
+    "MongoDB",
+    "Expressjs"
+  ],
+  "author": "Naeem Ashhar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
