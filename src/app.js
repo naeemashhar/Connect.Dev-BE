@@ -5,46 +5,19 @@ const app = express();
 
 //request handler (Order of Routes matters)
 
-//this will only handel GET requests 
-app.get("/user", (req, res) => {
+//this will only handel GET requests
+//in between path 
+// (+ => ab+c we can write any number of b's), 
+// (* => ab*cd we can write any number of characters), 
+// (ab?c => ab?c will match both ab and abc)
+// (a(bc)?d) = > that means (bc) is optional
+// (/a/) => this will match any path that starts with a
+//(/.*fly$/) => this will match any path that ends with fly
+app.get("/user/:user_id/:name/:age", (req, res) => { // dynamic id route
+    console.log(req.params); //to save dynamic parameters
+    //console.log(req.query);//to save query parameters
     res.send({firstName : "Naeem", lastName: "Ashhar"});
 });
-
-
-
-app.post("/user", (req, res) => {
-    res.send({message: "User created successfully!"});
-});
-
-
-
-app.delete("/user", (req, res) => {
-    res.send({message: "User deleted successfully!"});
-});
-
-
-app.put("/user", (req, res) => {
-    //this will handle PUT requests
-    //PUT is used to update the entire resource
-    res.send({message: "User updated successfully!"});
-});
-
-
-app.patch("/user", (req, res) => {
-    //this will handle PATCH requests
-    //PATCH is used to update a part of the resource
-    res.send({message: "User partially updated successfully!"});
-});
-
-
-
-
-
-
-//this will match all the HTTP methods 
-app.use("/admin", (req, res) =>{//request handler (Order of Routes matters)
-    res.send('Welcome to the admin page!');
-})
 
 
 app.listen(3000, () =>{
