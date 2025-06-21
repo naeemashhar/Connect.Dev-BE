@@ -2,33 +2,58 @@ const express = require('express');
 
 const app = express();
 
+const { adminAuth, userAuth } = require("./middlewares/auth");//second way to use middleware
+
 //ALWAYS REMEMBER HOW NODE.JS WORKS(LINE BY LINE MAIN STACK etc .....),ORDER MATTER
 
 
-//app.use("/route", [rh1, rh2, rh3], rh4); => we can wrap them using an array it will give u same result.
+
 
 //Why we use middlewares?
 // when (/user) called it will check line by line until he founds the respond and that response call as (REQUEST-HANDLERS) and rest of is called as (MIDDLEWARES).
 //(Get /user => middleware-chain => request-handler.) 
 //Example : 
 
-app.use("/", (req, res, next) =>{ //middleware
-    console.log('Home route accessed');
-    //res.send('Home route');
-    next();
+//handling middleware request for all GET, POST, PUT, DELETE requests to /admin, using (app.use)
+
+
+//this is the first way to use middleware
+/* app.use("/admin",(req, res, next) => { 
+    console.log('check the admin authorization'); 
+    //logic of authorization
+    const token = "xyzasdas";
+    const authorized = token === "xyz";
+    if(!authorized){
+        res.status(401).send('Access Denied');
+    }
+    else{
+        next();
+    }
+}); */
+
+//second way to use middleware
+app.use("/admin", adminAuth);
+
+
+app.get('/admin/getAllData', (req, res, next) =>{
+    res.send('All Data sended');
+});
+
+app.get('/admin/deleteUser', (req, res, next) =>{
+    res.send('User deleted');
 })
 
-app.use("/user", (req, res, next) =>{ //middleware
-    //Route handler-1 
-    console.log('User-1 route accessed');
-    //res.send('User-1 route');
-    next(); //function by (express-js) // or next() function to pass control to the next middleware function in the stack.
+app.post('/user/login', (req, res, next) => { //this will not use middleware
+    res.send('User logged in');
 });
-app.use("/user", (req, res, next) =>{ //request-handler
-    //Route handler-2 
-    console.log('User-2 route accessed');
-    res.send('User-2 route');
+
+
+app.get('/user/data', userAuth, (req, res, next) => { //another way of using middleware
+    res.send('User data sended');
 });
+
+
+
 
 app.listen(3000, () =>{
     console.log('Server is running on port 3000');
