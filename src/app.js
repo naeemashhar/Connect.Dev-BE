@@ -2,23 +2,35 @@ const express = require('express');
 
 const app = express();
 
+//ALWAYS REMEMBER HOW NODE.JS WORKS(LINE BY LINE MAIN STACK etc .....)
 
-//request handler (Order of Routes matters)
 
-//this will only handel GET requests
-//in between path 
-// (+ => ab+c we can write any number of b's), 
-// (* => ab*cd we can write any number of characters), 
-// (ab?c => ab?c will match both ab and abc)
-// (a(bc)?d) = > that means (bc) is optional
-// (/a/) => this will match any path that starts with a
-//(/.*fly$/) => this will match any path that ends with fly
-app.get("/user/:user_id/:name/:age", (req, res) => { // dynamic id route
-    console.log(req.params); //to save dynamic parameters
-    //console.log(req.query);//to save query parameters
-    res.send({firstName : "Naeem", lastName: "Ashhar"});
-});
+app.use("/route", [rh1, rh2, rh3], rh4);// we can wrap them using an array it will give u same result.
 
+
+app.use("/user", (req, res, next) =>{ //ap.use handles all(get,put ....) requests to the specified path.
+    //Route handler-1 
+    console.log('User-1 route accessed');
+    //res.send('User-1 route');
+    next(); //function by (express-js)
+}, (req, res, next) => {
+    //Route handler-2
+    console.log('User-2 route accessed');
+    //res.send('User-2 route');
+    next(); 
+},(req, res, next) => {
+    //Route handler-3
+    console.log('User-3 route accessed');
+    //res.send('User-3 route');
+    next();
+},
+(req, res, next) => {
+    //Route handler-4
+    console.log('User-4 route accessed');
+    res.send('User-4 route');
+
+}
+);
 
 app.listen(3000, () =>{
     console.log('Server is running on port 3000');
